@@ -1,0 +1,239 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Мы квадратики!</title>
+		<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+
+		<script type='text/javascript' src='http://code.jquery.com/jquery-1.8.1.min.js'></script>
+
+		<script>
+
+		$(document).ready(function() {
+			$('#game-new').bind('click', function() {
+				game.getParams();
+				game.drawField();
+				game.start();
+				game.movesCount = 0;
+				$('#mc').html('0');
+				$('#mmc').html(game.gd);
+			});
+		});
+
+		game = {
+			'fw': 0,
+			'fh': 0,
+			'gd': 0,
+			'movesCount': 0,
+
+			'getParams': function() {
+				game.fw = parseInt($('#fw').val());
+				game.fh = parseInt($('#fh').val());
+				game.gd = parseInt($('#gd').val());
+			},
+
+			'drawField': function() {
+				$('#field').html('');
+				for (i = 1; i <= game.fh; i++) {
+					$('#field').append("<div id='row-" + i + "'></div>");
+				}
+				for (i = 1; i <= game.fh; i++) {
+					for (j = 1; j <= game.fw; j++) {
+						$('#row-' + i).append("<a class='sqr white r" + i + " c" + j + "'></a>");
+					}
+					$('#row-' + i).append("<div class='clearfix'></div>")
+				}
+				$('.sqr').bind('click', function() {
+					var crd = game.getClickCrd(this);
+					game.fieldClick(crd);
+					if (game.checkFinish()) {
+						if (game.movesCount > game.gd) {
+							alert('Вы не достигли идеала =(\nПопробуйте ещё раз за меньшее число ходов');
+						} else {
+							alert('Поздравляем, вы победили!');
+						}
+					}
+				});
+			},
+
+			'getClickCrd':function(handler) {
+				var xPattern = /c([0-9]+)/i;
+				var yPattern = /r([0-9]+)/i;
+				var x = 0;
+				var y = 0;
+				x = xPattern.exec($(handler).attr('class'));
+				y = yPattern.exec($(handler).attr('class'));
+				crd = {
+					'x': parseInt(x[1]),
+					'y': parseInt(y[1])
+				};
+
+				return crd;
+			},
+
+			'fieldClick': function(crd) {
+				var colorPattern = /(white|grey|black)/i;
+
+				var squares = {
+					'left': null,
+					'right': null,
+					'top': null,
+					'bottom': null
+				};
+
+				if (crd.x > 1) {
+					var x = crd.x - 1;
+					squares.left = '.c' + x + '.r' + crd.y;
+				} else {
+					squares.left = '.c' + game.fw + '.r' + crd.y;
+				}
+
+				if (crd.x < game.fw) {
+					var x = crd.x + 1;
+					squares.right = '.c' + x + '.r' + crd.y;
+				} else {
+					squares.right = '.c1.r' + crd.y;
+				}
+
+				if (crd.y > 1) {
+					var y = crd.y - 1;
+					squares.bottom = '.c' + crd.x + '.r' + y;
+				} else {
+					squares.bottom = '.c' + crd.x + '.r' + game.fh;
+				}
+
+				if (crd.y < game.fh) {
+					var y = crd.y + 1;
+					squares.top = '.c' + crd.x + '.r' + y;
+				} else {
+					squares.top = '.c' + crd.x + '.r1';
+				}
+
+				$.each([squares.top, squares.bottom, squares.left, squares.right], function(index, handler) {
+					var color = colorPattern.exec($(handler).attr('class'));
+					color = color[1];
+					game.switchColor($(handler), color);
+				});
+
+				game.movesCount++;
+				$('#mc').html(game.movesCount);
+			},
+
+			'switchColor': function(handler, color) {
+				switch (color) {
+					case 'white':
+						handler.removeClass('white').addClass('grey');
+						break;
+					case 'grey':
+						handler.removeClass('grey').addClass('black');
+						break;
+					case 'black':
+						handler.removeClass('black').addClass('white');
+						break;
+				}
+			},
+
+			'start': function() {
+				for (i = 1; i <= game.gd; i++) {
+					var crd = {
+						'x': Math.floor(Math.random() * game.fw + 1),
+						'y': Math.floor(Math.random() * game.fh + 1)
+					};
+					game.fieldClick(crd);
+					game.fieldClick(crd);
+				}
+			},
+
+			'checkFinish': function() {
+				return ($('.sqr.grey').length + $('.sqr.black').length == 0);
+			}
+
+
+
+		}
+
+
+		</script>
+
+		<style>
+		.clearfix {
+			float: none;
+			clear: both;
+		}
+		#field {
+			margin-top: 30px;
+			margin-left: 30px;
+		}
+		.sqr {
+			display: block;
+			width: 40px;
+			height: 40px;
+			float: left;
+			margin: 0px 10px 10px 0px;
+			border: 3px solid #bbb;
+			cursor: pointer;
+		}
+		.sqr:hover {
+			border: 3px solid #b33;
+		}
+		.white {background-color: #fff;}
+		.grey  {background-color: #aaa;}
+		.black {background-color: #000;}
+
+		#mc, #mmc {
+			font-weight: bold;
+		}
+		</style>
+
+	</head>
+	<body>
+		<div id='header'>
+			Ширина поля
+			<select name='fw' id='fw'>
+				<option value='5'>5</option>
+				<option value='6'>6</option>
+				<option value='7'>7</option>
+				<option value='8'>8</option>
+				<option value='9'>9</option>
+				<option value='10'>10</option>
+				<option value='11'>11</option>
+				<option value='12'>12</option>
+			</select>
+			Высота поля
+			<select name='fh' id='fh'>
+				<option value='5'>5</option>
+				<option value='6'>6</option>
+				<option value='7'>7</option>
+				<option value='8'>8</option>
+				<option value='9'>9</option>
+				<option value='10'>10</option>
+				<option value='11'>11</option>
+				<option value='12'>12</option>
+			</select>
+			Сложность игры
+			<select name='gd' id='gd'>
+				<option value='2'>2</option>
+				<option value='3'>3</option>
+				<option value='4'>4</option>
+				<option value='5'>5</option>
+				<option value='6'>6</option>
+				<option value='8'>8</option>
+				<option value='10'>10</option>
+				<option value='12'>12</option>
+				<option value='15'>15</option>
+				<option value='20'>20</option>
+				<option value='30'>30</option>
+			</select>
+			<a id='game-new' href='javascript:void(0)' onclick=''>Начать игру!</a>
+			<br />
+			Вы сделали <span id='mc'>0</span> ходов из <span id='mmc'>0</span> разрешенных
+		</div>
+
+		<div id='field'></div>
+		Нажмите на "начать игру".<br />
+		Для изменения цвета щелкайте по квадратикам. Ваша задача - закрасить всё поле в белый цвет. Цвета меняются в таком порядке: белый - серый - черный - белый - ... и так по кругу.<br />
+		Чем выше сложность игры, тем больше ходов нужно сделать для достижения цели.<br />
+		Иногда можно пройти игру за меньшее количество ходов, чем это указано.<br />
+		Игра всегда имееет решение.
+	</body>
+</html>

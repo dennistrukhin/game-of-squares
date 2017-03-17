@@ -1,0 +1,152 @@
+* {
+    margin:0;
+    padding:0;
+}
+body {
+    font-family: 'Maven Pro', sans-serif;
+}
+
+
+.btn {
+    display:inline-block;
+    color:#fff;
+    text-decoration:none;
+    padding:4px 12px;
+    background:#666;
+}
+.btn:hover {
+    background:#888;
+}
+.btn.main {
+    background:#d44;
+}
+.btn.main:hover {
+    background:#d66;
+}
+
+.header {
+    float:left;
+    background: #e0e3e7;
+    border-right:1px solid #bbb;
+    width:250px;
+    padding:20px;
+    box-shadow: inset -7px 0 16px -13px #000;
+}
+.header .title {
+    font-size:18px;
+    text-transform:uppercase;
+    color:#d44;
+    text-shadow: 0 0 2px #fff;
+}
+
+.content {
+    margin-left:290px;
+    padding:20px 60px;
+}
+.content .caption {
+    font-size:18px;
+}
+.content .caption span {
+    text-transform:uppercase;
+}
+.content .description {
+    font-size:12px;
+    color:#555;
+}
+.content .intro p:first-child {
+    margin-top:60px;
+}
+.content .intro a:last-child {
+    margin-top: 20px;
+}
+.content .field {
+    margin: 20px 0;
+    position:relative;
+}
+
+.content .field .square {
+    display:block;
+    position:absolute;
+    border:1px solid transparent;
+    border-radius:2px;
+}
+.content .field .square .inner {
+    display:block;
+    border:1px solid #ccc;
+    border-radius:2px;
+}
+.content .field .square.live, .content .field .control.live {
+    cursor:pointer;
+    border-color: #095;
+    border-style:dashed;
+}
+.content .field .square.live .inner, .content .field .square.stone .inner, .content .field .square.neighbour .inner {
+    border-radius:0;
+}
+.content .field .square.stone {
+    border-color: #ccc;
+    border-style:dashed;
+}
+.content .field .square.neighbour {
+    border-color: #d44;
+    border-style:dashed;
+}
+
+.content .field .control {
+    position:absolute;
+    border-color:transparent;
+    border-style:dashed;
+}
+.content .field .control .inner {
+    background:#f0d3a7;
+    border: 1px solid #ccc;
+}
+
+
+.trackbar {
+    margin-top: 40px;
+}
+.trackbar .label {
+    text-transform: uppercase;
+    font-size: 12px;
+    padding-left: 5px;
+}
+.trackbar .track {
+    height: 6px;
+    background: #d44;
+    position: relative;
+    border-radius: 3px;
+    margin-top: 10px;
+}
+.trackbar .handler {
+    position: absolute;
+    top: -4px;
+    left: 5px;
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border: 1px solid #888;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+
+.game-start {
+    display: block;
+    border: 1px solid #d44;
+    padding: 5px 12px;
+    color: #d44;
+    text-align: center;
+    text-transform: uppercase;
+    margin-top: 50px;
+}
+.game-start:hover {
+    color: #fff;
+    background: #d44;
+    cursor: pointer;
+}
+
+.rules {
+    font-size: 14px;
+    margin-top: 20px;
+}
